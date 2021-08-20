@@ -47,6 +47,14 @@ Where continent is not null
 group by location,population
 order by HPPI desc --use desc to find highest to low
 
+--date included
+SELECT location,population,date, MAX(total_cases) as HighestInfectionCount, Max(total_cases/population)*100 as HPPI
+FROM [Portfolio projects]..CovidDeaths
+--where location like'%state%' --to specify visualization
+Where continent is not null
+group by location,population,date
+order by HPPI desc --use desc to find highest to low
+
 --show countries with highest death per population
 SELECT location, MAX(cast(total_deaths as int)) as TotalDeathCount
 FROM [Portfolio projects]..CovidDeaths
