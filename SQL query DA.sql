@@ -76,9 +76,64 @@ Where continent is  null --taking out not null will include countries
 group by location
 order by TotalDeathCount desc 
 
+--total new_deaths continued without world total, euro union, international
+
+SELECT location, sum(cast(new_deaths as int)) as NewDeathCount
+FROM [Portfolio projects]..CovidDeaths
+--where location like'%state%' --to specify visualization
+Where continent is  null
+and location not in ('world', 'European Union', 'International')--taking out not null will include countries
+group by location
+order by NewDeathCount desc 
+
+--special------------------------------------
+SELECT location, sum(cast(new_deaths as int)) as NewDeathCount
+FROM [Portfolio projects]..CovidDeaths
+--where location like'%state%' --to specify visualization
+Where continent is  null
+and location not in ('world', 'European Union', 'International')--taking out not null will include countries
+group by location
+order by NewDeathCount desc 
+
+SELECT location, sum(cast(total_deaths as int)) as TotalDeathCount
+FROM [Portfolio projects]..CovidDeaths
+--where location like'%state%' --to specify visualization
+Where continent is  null
+and location not in ('world', 'European Union', 'International')--taking out not null will include countries
+group by location
+order by TotalDeathCount desc 
+
+---------------------------------------------------------
+SELECT location, sum(cast(total_deaths as int)) as TotalDeathCount
+FROM [Portfolio projects]..CovidDeaths
+--where location like'%state%' --to specify visualization
+Where continent is  null
+and location not in  ('Europe', 'North America', 'South America', 'Asia', 'Africa','Oceania')--taking out not null will include countries
+group by location
+order by TotalDeathCount desc 
+
+-- total death test
+
+SELECT location, sum(cast(new_deaths as int)) + sum(cast(total_deaths as int)) as TotalDeathCount
+FROM [Portfolio projects]..CovidDeaths
+--where location like'%state%' --to specify visualization
+Where continent is  null
+and location not in ('world', 'European Union', 'International')--taking out not null will include countries
+group by location
+order by TotalDeathCount desc 
+
+
+SELECT location, sum(cast(total_deaths as int)) as TotalDeathCount
+FROM [Portfolio projects]..CovidDeaths
+--where location like'%state%' --to specify visualization
+Where continent is  null --taking out not null will include countries
+group by location
+order by TotalDeathCount desc 
+
 -- GLOBAL numbers--
 --we are doing by date as it will look out all the world
 --sum(cast(new_deaths as int)) need to cast because it is a float 
+-- with date
 SELECT  date, sum(new_cases) as total_cases, sum(cast(new_deaths as int)) as total_deaths , sum(cast(new_deaths as int))/sum(new_cases)*100 as DeathPercentage--, total_deaths, (total_deaths/total_cases)*100 as DeathPercentage
 FROM [Portfolio projects]..CovidDeaths
 --where location like'%state%'
@@ -86,8 +141,13 @@ where continent is not null
 group by date
 order by 1,2 
 
+
+
 --total of everything overall based on new cases and total cases
-SELECT sum(new_cases) as total_cases, sum(cast(new_deaths as int)) as total_deaths , sum(cast(new_deaths as int))/sum(new_cases)*100 as DeathPercentage--, total_deaths, (total_deaths/total_cases)*100 as DeathPercentage
+--without date
+SELECT sum(new_cases) as total_cases, 
+sum(cast(new_deaths as int)) as total_deaths , 
+sum(cast(new_deaths as int))/sum(new_cases)*100 as DeathPercentage--, total_deaths, (total_deaths/total_cases)*100 as DeathPercentage
 FROM [Portfolio projects]..CovidDeaths
 --where location like'%state%'
 where continent is not null 
