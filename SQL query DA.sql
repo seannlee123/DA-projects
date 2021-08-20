@@ -39,13 +39,13 @@ where location like'%state%' --to specify visualization
 order by 1,2 
 
 --highest infection rate vs population
---PPI PercentPopulationInfected
-SELECT location,population, MAX(total_cases) as HighestInfectionCount, Max(total_cases/population)*100 as PPI
+--HPPI HighestPercentPopulationInfected
+SELECT location,population, MAX(total_cases) as HighestInfectionCount, Max(total_cases/population)*100 as HPPI
 FROM [Portfolio projects]..CovidDeaths
 --where location like'%state%' --to specify visualization
 Where continent is not null
 group by location,population
-order by PPI desc --use desc to find highest to low
+order by HPPI desc --use desc to find highest to low
 
 --show countries with highest death per population
 SELECT location, MAX(cast(total_deaths as int)) as TotalDeathCount
